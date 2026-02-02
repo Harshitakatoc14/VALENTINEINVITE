@@ -142,6 +142,10 @@ body, html {margin:0; padding:0; font-family:'Arial',sans-serif; overflow:hidden
 </div>
 
 <script>
+// MUSIC (play after user click for autoplay restrictions)
+const music = document.getElementById('bgMusic');
+music.play().catch(()=>console.log("Autoplay blocked, will play after first click"));
+
 // PAGE 1 floating hearts
 function createHeart() {
     const heart = document.createElement('div');
@@ -166,11 +170,11 @@ setTimeout(()=>{
     setTimeout(()=>{
         page1.classList.remove('active');
         page2.classList.add('active');
-        showQuestion(0);
-    },3000); // after popup stays 3s, move to page2
+        showQuestion(0); // start first question
+    },3000);
 },1000);
 
-// PAGE 2 Questions
+// PAGE 2 QUESTIONS
 const questions = [
 {text:"When did we kiss for the first time?",options:["25 December","26 December","27 December"],answer:"26 December"},
 {text:"When did you say I love you to me?",options:["1 January","2 January","3 January"],answer:"2 January"},
@@ -185,47 +189,47 @@ const message = document.getElementById('message');
 const kissesPopup = document.getElementById('kissesPopup');
 
 function showQuestion(index){
-message.textContent="";
-kissesPopup.style.display="none";
-questionText.textContent = questions[index].text;
-optionsContainer.innerHTML="";
-questions[index].options.forEach(option=>{
-    const btn = document.createElement('button');
-    btn.textContent = option;
-    btn.onclick = ()=>checkAnswer(option);
-    optionsContainer.appendChild(btn);
-});
+    message.textContent = "";
+    kissesPopup.style.display = "none";
+    questionText.textContent = questions[index].text;
+    optionsContainer.innerHTML = "";
+    questions[index].options.forEach(option=>{
+        const btn = document.createElement('button');
+        btn.textContent = option;
+        btn.onclick = ()=>checkAnswer(option);
+        optionsContainer.appendChild(btn);
+    });
 }
 
 function checkAnswer(selected){
-if(selected === questions[currentQuestion].answer){
-    kissesPopup.style.display = "block";
-    setTimeout(()=>{
-        kissesPopup.style.display="none";
-        currentQuestion++;
-        if(currentQuestion<questions.length){
-            showQuestion(currentQuestion);
-        } else {
-            page2.classList.remove('active');
-            page3.classList.add('active');
-        }
-    },2000); // kisses popup stays longer
-}else{
-    message.textContent = "Wrong answer, Mote kutte 😢";
-}
+    if(selected === questions[currentQuestion].answer){
+        kissesPopup.style.display = "block";
+        setTimeout(()=>{
+            kissesPopup.style.display = "none";
+            currentQuestion++;
+            if(currentQuestion<questions.length){
+                showQuestion(currentQuestion);
+            } else {
+                page2.classList.remove('active');
+                page3.classList.add('active');
+            }
+        },2000);
+    } else {
+        message.textContent = "Wrong answer, Mote kutte 😢";
+    }
 }
 
 // PAGE 3 Valentine
 function checkValentine(ans){
-const finalMessage = document.getElementById('finalMessage');
-const romanticLines = document.getElementById('romanticLines');
-if(ans==='yes'){
-    finalMessage.textContent="Yay! 💖 You made me so happy!";
-    romanticLines.innerHTML="You are my sunshine 🌞,<br>My forever and always 💕,<br>Happy Valentine's Day, my love ❤️";
-}else{
-    finalMessage.textContent="Nahi Mote! Wrong answer 😢";
-    romanticLines.textContent="";
-}
+    const finalMessage = document.getElementById('finalMessage');
+    const romanticLines = document.getElementById('romanticLines');
+    if(ans==='yes'){
+        finalMessage.textContent="Yay! 💖 You made me so happy!";
+        romanticLines.innerHTML="You are my sunshine 🌞,<br>My forever and always 💕,<br>Happy Valentine's Day, my love ❤️";
+    } else {
+        finalMessage.textContent="Nahi Mote! Wrong answer 😢";
+        romanticLines.textContent="";
+    }
 }
 </script>
 </body>
